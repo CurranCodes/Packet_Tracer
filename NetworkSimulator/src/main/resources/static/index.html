@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Network Graph</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="Style.css">
+
+  <script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-core.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-graph.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-data-adapter.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<button class="button1" type="button">Click Here!</button>
+<script>
+  //used to display network
+  anychart.data.loadJsonFile('dataset.json', function (data) {
+    // create a chart from the loaded data
+    var chart = anychart.graph(data);
+
+    // set the title
+    chart.title("Network Graph");
+
+    //enable labels of nodes
+    chart.nodes().labels().enabled(true);
+    chart.edges().labels().enabled(true);
+
+    //configure labels of nodes
+    chart.nodes().labels().format("{%id}");
+    chart.nodes().labels().fontSize(12);
+    chart.nodes().labels().fontWeight(600);
+
+    //configures labels of edges
+    chart.edges().labels().format("{%weight}");
+    chart.edges().labels().fontSize(12);
+    chart.edges().labels().fontWeight(600);
+
+    //configure labels of nodes
+    chart.group("router").labels().fontColor("#00bfa5");
+    // draw the chart
+    chart.container("container").draw();
+  })
+</script>
+
+</body>
+
+</html>
