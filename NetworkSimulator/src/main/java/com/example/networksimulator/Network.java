@@ -4,8 +4,9 @@
 package com.example.networksimulator;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
-@Service
+@RestController
 public class Network {
     Router[] routers;
 

@@ -12,9 +12,12 @@
 </head>
 <body>
 <div id="container"></div>
-<button class="button1" type="button">Click Here!</button>
+<button class="button1" type="button" id="createDeviceButton">Create a Device!</button>
 <script>
+  //Jocelyn wuz here
+
   //used to display network
+  const createDeviceButton = document.getElementById("createDeviceButton");
   anychart.data.loadJsonFile('dataset.json', function (data) {
     // create a chart from the loaded data
     var chart = anychart.graph(data);
@@ -41,6 +44,15 @@
     // draw the chart
     chart.container("container").draw();
   })
+
+  function createDevice(){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+
+  }
+
+  createDeviceButton.addEventListener('click', createDevice);
 </script>
 
 </body>
