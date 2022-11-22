@@ -4,29 +4,15 @@
 package com.example.networksimulator;
 
 import java.util.ArrayList;
-//something
 public class Router {
     private String deviceName;
     private ArrayList<String> connections;
+    private ArrayList<ArrayList<String>> routingTable;
 
-    public Router(String deviceName){
+    Router(String deviceName, ArrayList<String> connections){
         this.deviceName = deviceName;
-        connections = new ArrayList<String>(5);
+        this.connections = connections;
     }
 
-    public void addConnection (String deviceName){
-        connections.add(deviceName);
-    }
-
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    public ArrayList<String> getConnections() {
-        return (ArrayList<String>) connections.clone();
-    }
-
-    public void updateConnections(ArrayList<String> newConnections){
-        connections = newConnections;
-    }
+    public
 }
