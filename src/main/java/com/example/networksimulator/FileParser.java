@@ -23,6 +23,6 @@ public class FileParser {
 
     public String refreshNetwork(){
         Network network = new Network();
-
+        return null;
     }
 }
