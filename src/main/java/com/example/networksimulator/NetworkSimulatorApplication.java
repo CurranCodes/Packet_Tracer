@@ -5,26 +5,21 @@ package com.example.networksimulator;
 import org.json.simple.parser.JSONParser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @SpringBootApplication
 @RestController
 public class NetworkSimulatorApplication {
-
+    public static String currentNetworkState;
     public static void main(String[] args) {
         SpringApplication.run(NetworkSimulatorApplication.class, args);
     }
 
-    @GetMapping("/update-json")
-    public @ResponseBody String getJson (@RequestParam(value = "Encoding") String encoding,
-                                         @RequestParam(value = "FileName") String filename){
-        FileParser parser = new FileParser(filename, encoding);
+    @PostMapping("/postNetwork")
+    public void postNetwork (@RequestBody String networkEncoding ){
+        System.out.println(networkEncoding);
 
-        return parser.refresh();
     }
 
 }

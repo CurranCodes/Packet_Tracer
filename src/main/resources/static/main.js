@@ -1,41 +1,5 @@
-// CODE IN PROGRESS
-function updateJson(fileName) {
-    fetch("http://localhost:8080/Network.json")
-        .then((response) => response.json())
-        .then((data) => console.log(data));
-
-    const xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.onreadystatechange = function () {
-        if (this.readyState !== 4) return;
-
-        if (this.status === 200) {
-            const fileContent = JSON.parse(this.responseText);
-            const fs = require('fs');
-            const file = require(fileName);
-
-            file.key = "new value";
-
-            fs.writeFile(fileName, JSON.stringify(file), function writeJSON(err) {
-                if (err) return console.log(err);
-                console.log(fileContent);
-            });
-        }
-    }
-
-    const jsonEncoding = JSON.stringify(Network);
-
-    let args = "FileName=" + fileName + "&Encoding=" + jsonEncoding;
-
-    xmlHttp.open("GET", "http://localhost:8080/get-json?" + args, true);
-    xmlHttp.send();
-
-}
-//END CODE IN PROGRESS
-
-
 //used to display network
-    function refresh() {
+function refresh() {
         anychart.data.loadJsonFile("Network.json", function (data) {
             // create a chart from the loaded data
             var chart = anychart.graph(data);
@@ -64,3 +28,16 @@ function updateJson(fileName) {
         })
     }
     refresh();
+
+// CODE IN PROGRESS
+function postNetworkChange() {
+    let NetworkEncoding;
+    const xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("POST", "http://localhost:8080/postNetwork", true);
+    xmlHttp.send(NetworkEncoding);
+
+}
+
+    postNetworkChange();
+//END CODE IN PROGRESS
