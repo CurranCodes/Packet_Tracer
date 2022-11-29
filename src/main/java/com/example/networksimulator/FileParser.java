@@ -14,7 +14,7 @@ public class FileParser {
     }
 
     public String refresh(){
-        if (fileName.equals("dataset.json")){
+        if (fileName.equals("Network.json")){
             return refreshNetwork();
         } else {
             return null;
