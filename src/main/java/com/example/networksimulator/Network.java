@@ -16,4 +16,12 @@ public class Network {
     public void createRouter(String routerName, ArrayList<String> edges){
         Router router = new Router(routerName, edges);
     }
+
+    public Router getRouterPointer(String routerName){
+        for (int i = 0; i < routers.size(); i++){
+            if (routerName.equals(routers.get(i).getDeviceName())){
+                return routers.get(i);
+            }
+        }
+    }
 }

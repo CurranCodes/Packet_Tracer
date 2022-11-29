@@ -17,4 +17,8 @@ public class Router {
     public void route(){
 
     }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
 }
