@@ -6,12 +6,13 @@ package com.example.networksimulator;
 import java.util.ArrayList;
 public class Router {
     private String deviceName;
-    private ArrayList<String> connections;
-    private ArrayList<ArrayList<String>> routingTable;
+    private ArrayList<Router> neighbors;
+    private ArrayList<String[]> cost;
 
-    Router(String deviceName, ArrayList<String> connections){
+    Router(String deviceName, ArrayList<Router> neighbors, ArrayList<String[]> cost){
         this.deviceName = deviceName;
-        this.connections = connections;
+        this.neighbors = neighbors;
+        this.cost = cost;
     }
 
     public void route(){

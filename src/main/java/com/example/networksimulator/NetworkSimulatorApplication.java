@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @SpringBootApplication
 @RestController
 public class NetworkSimulatorApplication {
+    public static Network network;
     public static String currentNetworkState;
     public static void main(String[] args) {
         SpringApplication.run(NetworkSimulatorApplication.class, args);
