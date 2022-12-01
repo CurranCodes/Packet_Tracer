@@ -19,6 +19,8 @@ public class Router {
     //an ArrayList of String arrays that contain a router name in index 0 and a costList in index 1
     private final ArrayList<String[]> costList;
 
+    private String[][] routingTable;
+
     Router(String deviceName, ArrayList<Router> neighbors, ArrayList<String[]> costList){
         this.deviceName = deviceName;
         this.neighbors = neighbors;
