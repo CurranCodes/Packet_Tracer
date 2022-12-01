@@ -39,5 +39,4 @@ function refresh() {
 }
 
 anychart.onDocumentReady(refresh());
-    refresh();
 

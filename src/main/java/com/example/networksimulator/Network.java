@@ -95,12 +95,6 @@ public class Network {
         removeName(routerName);
     }
 
-    public void routeAll(){
-        for (Router router : routers){
-            router.route();
-        }
-    }
-
     private Router getRouterPointer(String routerName){
         for (Router router : routers) {
             if (routerName.equals(router.getDeviceName())) {
@@ -250,6 +244,14 @@ public class Network {
         }
 
         return new NetworkGraph(nodes, edges);
+    }
+
+    //creates routing table on each router
+    public void routeAll(){
+        Router[] routerArr = (Router[]) routers.toArray();
+        for(Router router : routers){
+            router.route(routerArr);
+        }
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Router {
     //an ArrayList of String arrays that contain a router name in index 0 and a costList in index 1
     private final ArrayList<String[]> costList;
 
-    private String[][] routingTable;
+    private RoutingTable routingTable;
 
     Router(String deviceName){
         this.deviceName = deviceName;
@@ -28,8 +28,10 @@ public class Router {
     }
 
     /** This method is for you to implement Maysam! **/
-    public void route(){
+    public void route(Router[] routers){
         //TODO: construct a routing table dynamically given the values of our instance variables
+
+        this.routingTable = routingTable;
     }
 
     public String getDeviceName() {

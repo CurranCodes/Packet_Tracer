@@ -42,6 +42,17 @@ public class NetworkSimulatorApplication {
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/getNetworkGraph")
     public String postNetworkJson () throws IOException {
+        return getNetworkJson();
+    }
+
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/deleteRouter")
+    public String deleteRouter(@RequestParam(name = "ID") String routerName) {
+        network.deleteRouter(routerName);
+        return getNetworkJson();
+    }
+
+    public static String getNetworkJson(){
         Gson gson = new Gson();
         String graphJSON = gson.toJson(network.toNetworkGraph());
         return graphJSON;
