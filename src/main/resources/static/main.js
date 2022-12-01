@@ -1,43 +1,43 @@
 //used to display network
 function refresh() {
-        anychart.data.loadJsonFile("Network.json", function (data) {
-            // create a chart from the loaded data
-            var chart = anychart.graph(data);
+    const http = new XMLHttpRequest();
 
-            // set the title
-            chart.title("Network Graph");
+    http.onreadystatechange = function(){
+            if(http.readyState === 4 && http.status === 200) {
+                // create a chart from the loaded data
+                const JSONresponse = http.responseText;
+                const networkJSON = JSON.parse(JSONresponse);
+                var chart = anychart.graph(networkJSON);
 
-            //enable labels of nodes
-            chart.nodes().labels().enabled(true);
-            chart.edges().labels().enabled(true);
+                //enable labels of nodes
+                chart.nodes().labels().enabled(true);
+                chart.edges().labels().enabled(true);
 
-            //configure labels of nodes
-            chart.nodes().labels().format("{%id}");
-            chart.nodes().labels().fontSize(12);
-            chart.nodes().labels().fontWeight(600);
+                //configure labels of nodes
+                chart.nodes().labels().format("{%id}");
+                chart.nodes().labels().fontSize(12);
+                chart.nodes().labels().fontWeight(600);
+                chart.nodes().labels().fontColor("#00bfa5");
 
-            //configures labels of edges
-            chart.edges().labels().format("{%weight}");
-            chart.edges().labels().fontSize(12);
-            chart.edges().labels().fontWeight(600);
+                //configures labels of edges
+                chart.edges().labels().format("{%weight}");
+                chart.edges().labels().fontSize(12);
+                chart.edges().labels().fontWeight(600);
 
-            //configure labels of nodes
-            chart.group("router").labels().fontColor("#00bfa5");
-            // draw the chart
-            chart.container("container").draw();
-        })
-    }
-    refresh();
+                //configure labels of nodes
 
-// CODE IN PROGRESS
-function postNetworkChange() {
-    let NetworkEncoding;
-    const xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("POST", "http://localhost:8080/postNetwork", true);
-    xmlHttp.send(NetworkEncoding);
+                // draw the chart
+                chart.container("container").draw();
+            }
+        }
 
+
+        const url = 'http://localhost:8080/getNetworkGraph';
+        http.open("GET", url);
+        http.send();
 }
 
-    postNetworkChange();
-//END CODE IN PROGRESS
+anychart.onDocumentReady(refresh());
+    refresh();
+
