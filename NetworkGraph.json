@@ -1,0 +1,77 @@
+{"nodes": [{"id": "R1", "group": "router"}, {"id": "R2", "group": "router"}, {"id": "R3", "group": "router"}, {
+      "id": "R4",
+      "group": "router"
+    },
+    {
+      "id": "R5",
+      "group": "router"
+    }
+  ],
+  "edges": [
+    {
+      "from": "R1",
+      "to": "R2",
+      "weight": 3
+    },
+    {
+      "from": "R1",
+      "to": "R3",
+      "weight": 3
+    },
+    {
+      "from": "R1",
+      "to": "R5",
+      "weight": 3
+    },
+    {
+      "from": "R2",
+      "to": "R3",
+      "weight": 3
+    },
+    {
+      "from": "R2",
+      "to": "R1",
+      "weight": 3
+    },
+    {
+      "from": "R2",
+      "to": "R5",
+      "weight": 3
+    },
+    {
+      "from": "R3",
+      "to": "R4",
+      "weight": 3
+    },
+    {
+      "from": "R3",
+      "to": "R5",
+      "weight": 3
+    },
+    {
+      "from": "R3",
+      "to": "R2",
+      "weight": 3
+    },
+    {
+      "from": "R3",
+      "to": "R1",
+      "weight": 3
+    },
+    {
+      "from": "R4",
+      "to": "R5",
+      "weight": 3
+    },
+    {
+      "from": "R4",
+      "to": "R3",
+      "weight": 3
+    },
+    {
+      "from": "Router 4",
+      "to": "Router 3",
+      "weight": 3
+    }
+  ]
+}

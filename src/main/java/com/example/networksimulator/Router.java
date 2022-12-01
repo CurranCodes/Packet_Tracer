@@ -27,6 +27,7 @@ public class Router {
         this.costList = new ArrayList<String[]>();
     }
 
+    /** This method is for you to implement Maysam! **/
     public void route(){
         //TODO: construct a routing table dynamically given the values of our instance variables
     }
@@ -38,20 +39,22 @@ public class Router {
     // "Removes" a connection associated with a given destination device and returns true
     // if the connection to said device was non-existent it returns false
     public boolean removeConnection(String deviceName){
+        Router toRemove = null;
         for (Router neighbor : neighbors){
             if (neighbor.getDeviceName().equals(deviceName)) {
-                //removes connection
-                neighbors.removeIf(n -> (Objects.equals(n.getDeviceName(), deviceName)));
-
-                //removes cost entry
-                costList.removeIf(n -> (n[0].equals(deviceName)));
-
-                //removes the connection and cost entry in the previously connected router
-                neighbor.removeConnection(this.deviceName);
-
-                //informs caller of successful operation
-                return true;
+                toRemove = neighbor;
             }
+        }
+
+        if (toRemove == null) {
+            //removes connection
+            neighbors.removeIf(n -> (Objects.equals(n.getDeviceName(), deviceName)));
+
+            //removes cost entry
+            costList.removeIf(n -> (n[0].equals(deviceName)));
+
+            //removes the connection and cost entry in the previously connected router
+            toRemove.removeConnection(this.deviceName);
         }
         return false;
     }
@@ -77,18 +80,12 @@ public class Router {
         return false;
     }
 
-    // Returns true if a "connection" exists for a given device name
-    public boolean connectedTo(String deviceName){
-        for (Router neighbor : neighbors) {
-            if (neighbor.getDeviceName().equals(deviceName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public ArrayList<Router> getNeighbors(){
         return neighbors;
+    }
+
+    public Node toNode(){
+        return new Node(deviceName, "Router");
     }
 
     @Override
