@@ -1,4 +1,4 @@
-// In progress router class to represent router instances
+// Router class to represent router instances
 // Curran Fitzgerald
 
 package com.example.networksimulator;
@@ -21,10 +21,10 @@ public class Router {
 
     private String[][] routingTable;
 
-    Router(String deviceName, ArrayList<Router> neighbors, ArrayList<String[]> costList){
+    Router(String deviceName){
         this.deviceName = deviceName;
-        this.neighbors = neighbors;
-        this.costList = costList;
+        this.neighbors = new ArrayList<Router>();
+        this.costList = new ArrayList<String[]>();
     }
 
     public void route(){
@@ -85,5 +85,21 @@ public class Router {
             }
         }
         return false;
+    }
+
+    public ArrayList<Router> getNeighbors(){
+        return neighbors;
+    }
+
+    @Override
+    public String toString(){
+        String router ="\n**** Router: "+ deviceName + " ****\n\n";
+        router += "Number of Connections: " + neighbors.size() + "\n\n";
+
+        for (String[] cost : costList){
+            router += "Connected to " + cost[0] + ", cost is " + cost[1] + " milliseconds\n\n";
+        }
+
+        return router;
     }
 }
