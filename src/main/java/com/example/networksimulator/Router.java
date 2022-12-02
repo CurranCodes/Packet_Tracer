@@ -43,6 +43,11 @@ public class Router {
     }
 
     public RoutingTable getRoutingTable(){
+        //if routing table doesn't exist, create routingTable
+        if (routingTable == null){
+            route(parentNetwork.getRouters());
+        }
+
         return routingTable;
     }
 

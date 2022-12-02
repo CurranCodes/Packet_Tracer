@@ -228,6 +228,10 @@ public class Network {
         return true;
     }
 
+    public Router[] getRouters(){
+        return (Router[]) routers.toArray();
+    }
+
     public NetworkGraph toNetworkGraph(){
         Node[] nodes = new Node[routers.size()];
         int index = 0;
