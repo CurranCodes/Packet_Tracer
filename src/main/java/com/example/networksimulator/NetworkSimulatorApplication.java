@@ -34,7 +34,7 @@ public class NetworkSimulatorApplication {
         String graphJSON = gson.toJson(network.toNetworkGraph());
         System.out.println(graphJSON);
 
-
+        //starts the application
         SpringApplication.run(NetworkSimulatorApplication.class, args);
 
     }
