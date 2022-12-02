@@ -5,17 +5,11 @@ package com.example.networksimulator;
 public class RoutingTable {
 
     //Instance variables
-    private String routerName;
-    private int routerNum;
-    private int cost;
+    RoutingTableRow[] rows;
 
     //RoutingTable constructor
 
-    public RoutingTable(String routerName, int routerNum, int cost) {
-        this.routerName = routerName;
-        this.routerNum = routerNum;
-        this.cost = cost;
+    public RoutingTable(RoutingTableRow[] rows) {
+        this.rows = rows;
     }
-
-
 }
