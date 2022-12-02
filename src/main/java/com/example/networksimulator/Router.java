@@ -30,6 +30,12 @@ public class Router {
     /** This method is for you to implement Maysam! **/
     public void route(Router[] routers){
         //TODO: construct a routing table dynamically given the values of our instance variables
+        neighbors.size();
+
+        //placeholder
+        for(Router router: neighbors){
+            System.out.println(router.deviceName);
+        }
 
         this.routingTable = routingTable;
     }
@@ -88,6 +94,16 @@ public class Router {
 
     public Node toNode(){
         return new Node(deviceName, "Router");
+    }
+
+    //gets the cost of a certain edge
+    private int getCost(Router router){
+        for(String[] costEntry : costList){
+            if (costEntry[0].equals(router.getDeviceName())){
+                return Integer.parseInt(costEntry[1]);
+            }
+        }
+        return -1;
     }
 
     @Override
