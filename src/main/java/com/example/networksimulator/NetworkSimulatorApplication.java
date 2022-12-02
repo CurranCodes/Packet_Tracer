@@ -29,11 +29,15 @@ public class NetworkSimulatorApplication {
             System.out.println(e);
         }
 
+        /** PUT CODE BELOW HERE YOU WANT TO TEST**/
+
         System.out.println(network);
 
         Gson gson = new Gson();
         String graphJSON = gson.toJson(network.toNetworkGraph());
         System.out.println(graphJSON);
+
+        /** PUT CODE ABOVE HERE YOU WANT TO TEST**/
 
         //starts the application
         SpringApplication.run(NetworkSimulatorApplication.class, args);
