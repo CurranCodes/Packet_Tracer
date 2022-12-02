@@ -39,7 +39,13 @@ public class NetworkSimulatorApplication {
         RoutingTableRow routingTableRow = new RoutingTableRow("R1", "R3", 300);
         RoutingTableRow[] routingTableRows = {routingTableRow};
         RoutingTable routingTable = new RoutingTable("R2", routingTableRows);
+
         System.out.println(routingTable);
+
+//        A way to get and print a specific routing table associated to a certain router
+//        System.out.println(network.getRouter("R1").getRoutingTable());
+
+
 
         /** PUT CODE ABOVE HERE YOU WANT TO TEST**/
 

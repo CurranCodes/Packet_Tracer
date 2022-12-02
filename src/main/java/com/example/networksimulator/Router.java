@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Router {
+    Network parentNetwork;
 
     // a Router's unique identifier (e.g. R1, R2, R3, ..., Rn)
     private final String deviceName;
@@ -21,7 +22,8 @@ public class Router {
 
     private RoutingTable routingTable;
 
-    Router(String deviceName){
+    Router(String deviceName, Network parentNetwork){
+        this.parentNetwork = parentNetwork;
         this.deviceName = deviceName;
         this.neighbors = new ArrayList<Router>();
         this.costList = new ArrayList<String[]>();

@@ -47,7 +47,7 @@ public class Network {
         //gets all the router names and creates routers using the basic constructor
         for(String routerString : routerStrings){
             String routerName  = routerString.split(": \\(")[0];
-            routers.add(new Router(routerName));
+            routers.add(new Router(routerName, this));
 
             //gets the number after R and sets the corresponding index to true (the name is now taken)
             addNewName(routerName);
@@ -72,8 +72,18 @@ public class Network {
         }
     }
 
+    public Router getRouter(String routerName){
+        for(Router currentRouter : routers){
+            if (currentRouter.getDeviceName().equals(routerName)){
+                return currentRouter;
+            }
+        }
+
+        return null;
+    }
+
     public void createRouter(String routerName) throws Exception {
-        Router router = new Router(routerName);
+        Router router = new Router(routerName, this);
         routers.add(router);
 
         //the name is now taken
