@@ -12,4 +12,12 @@ public class RoutingTableRow {
         this.cost = cost;
     }
 
+    @Override
+    public String toString(){
+        String routingTableRow = "Destination: ";
+        routingTableRow += destination;
+        routingTableRow += "\nLine: " + line;
+        routingTableRow += "\nCost: " + cost;
+        return routingTableRow;
+    }
 }

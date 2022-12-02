@@ -30,12 +30,19 @@ public class NetworkSimulatorApplication {
         }
 
         /** PUT CODE BELOW HERE YOU WANT TO TEST**/
-
+        // prints network config
         System.out.println(network);
 
+        //tests json string of initial config
         Gson gson = new Gson();
         String graphJSON = gson.toJson(network.toNetworkGraph());
         System.out.println(graphJSON);
+
+        //displays a routing tables data
+        RoutingTableRow routingTableRow = new RoutingTableRow("R1", "R3", 300);
+        RoutingTableRow[] routingTableRows = {routingTableRow};
+        RoutingTable routingTable = new RoutingTable("R2", routingTableRows);
+        System.out.println(routingTable);
 
         /** PUT CODE ABOVE HERE YOU WANT TO TEST**/
 

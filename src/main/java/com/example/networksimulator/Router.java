@@ -40,6 +40,10 @@ public class Router {
         this.routingTable = routingTable;
     }
 
+    public RoutingTable getRoutingTable(){
+        return routingTable;
+    }
+
     public String getDeviceName() {
         return deviceName;
     }
