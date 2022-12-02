@@ -20,6 +20,7 @@ public class NetworkSimulatorApplication {
     public static Network network;
     public static String currentNetworkState;
     public static void main(String[] args) {
+        //instantiates network if the initial config file can be found
         try {
             // replace this string argument with the file path of your choice
             // relative to the NetworkSimulator Directory
