@@ -134,8 +134,11 @@ function buildPacket(sourceName, destinationName){
 //methodStub
 function routePacket(sourceName, destinationName){
     buildPacket(sourceName, destinationName);
+    var currentNode = sourceName;
 
+    while (!(currentNode === destinationName)){
 
+    }
 }
 
 
