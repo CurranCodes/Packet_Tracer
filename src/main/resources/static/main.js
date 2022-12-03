@@ -87,16 +87,17 @@ function displayRoutingTable(routerName){
         const keyRow = document.createElement('tr');
         keyRow.className = "keyRow";
 
+        const destinationKey = document.createElement('td');
+        destinationKey.innerHTML = "DESTINATION";
         const lineKey = document.createElement('td');
         lineKey.innerHTML = "LINE";
         const costKey = document.createElement('td');
         costKey.innerHTML = "COST(ms)";
-        const destinationKey = document.createElement('td');
-        destinationKey.innerHTML = "DESTINATION";
 
+        keyRow.appendChild(destinationKey);
         keyRow.appendChild(lineKey);
         keyRow.appendChild(costKey);
-        keyRow.appendChild(destinationKey);
+
 
         routingTableDOM.appendChild(keyRow);
 
