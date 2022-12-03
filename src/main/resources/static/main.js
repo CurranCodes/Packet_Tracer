@@ -26,6 +26,9 @@ function draw() {
             chart.edges().labels().fontSize(12);
             chart.edges().labels().fontWeight(600);
 
+            //disables interactivity (graph is static)
+            chart.interactivity().enabled(false);
+
             //configure labels of nodes
 
 
