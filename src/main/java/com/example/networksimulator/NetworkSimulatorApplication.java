@@ -69,8 +69,7 @@ public class NetworkSimulatorApplication {
 
     public static String getNetworkJson(){
         Gson gson = new Gson();
-        String graphJSON = gson.toJson(network.toNetworkGraph());
-        return graphJSON;
+        return gson.toJson(network.toNetworkGraph());
     }
 
 }
