@@ -111,6 +111,7 @@ function displayRoutingTable(routerName){
         //routing table in the DOM
         for (const key in rows){
             const currentDataRow = document.createElement('tr');
+            currentDataRow.className = "data-row"; //added for css selection just in case
 
             const line = document.createElement('td');
             line.innerHTML = key.line;
