@@ -261,11 +261,18 @@ public class Network {
     }
 
     //creates routing table on each router
-    public void routeAll(){
+    public RoutingTable[] routeAll(){
         Router[] routerArr = (Router[]) routers.toArray();
+        RoutingTable[] allTables = new RoutingTable[routers.size()];
+        int index = 0;
+
         for(Router router : routers){
             router.route(routerArr);
+            allTables[index] = router.getRoutingTable();
+            index++;
         }
+
+        return allTables;
     }
 
     @Override

@@ -67,6 +67,14 @@ public class NetworkSimulatorApplication {
         return getNetworkJson();
     }
 
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/getRoutingTables")
+    public String getRoutingTables() {
+        Gson gson = new Gson();
+        return gson.toJson(network.routeAll());
+    }
+
+
     public static String getNetworkJson(){
         Gson gson = new Gson();
         return gson.toJson(network.toNetworkGraph());
