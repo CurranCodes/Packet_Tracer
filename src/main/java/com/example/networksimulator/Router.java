@@ -3,8 +3,7 @@
 
 package com.example.networksimulator;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class Router {
     Network parentNetwork;
@@ -21,6 +20,7 @@ public class Router {
     private final ArrayList<String[]> costList;
 
     private RoutingTable routingTable;
+    private static final double EPS = 1e-6;
 
     Router(String deviceName, Network parentNetwork){
         this.parentNetwork = parentNetwork;
@@ -30,26 +30,62 @@ public class Router {
     }
 
     /** This method is for you to implement Maysam! **/
-    public void route(Router[] routers){
         //TODO: construct a routing table dynamically given the values of our instance variables
-        neighbors.size();
+        public static class Edge {
+            double cost;
+            int from, to;
+            public Edge(int from, int to, double cost) {
+                this.from = from;
+                this.to = to;
+                this.cost = cost;
+            }
+        }
+        public static class Node {
+            int id;
+            double value;
 
-        //placeholder
-        for(Router router: neighbors){
-            System.out.println(router.deviceName);
+            public Node(int id, double value) {
+                this.id = id;
+                this.value = value;
+            }
+
+            public Node(String deviceName, String router) {
+            }
         }
 
-        this.routingTable = routingTable;
-    }
+        private int n;
+        private double[] dist;
+        private Integer[] prev;
+        private List<List<Edge>> graph;
 
-    public RoutingTable getRoutingTable(){
-        //if routing table doesn't exist, create routingTable
-        if (routingTable == null){
-            route(parentNetwork.getRouters());
+        private Comparator<Node> comparator = new Comparator<Node>() {
+            @Override
+            public int compare(Node R1, Node R2) {
+                return 0;
+            }
+
+            
+            public int compare(Node nodeR1, Node nodeR2, Node nodeR3, Node nodeR4, Node nodeR5) {
+                if (Math.abs(nodeR1.value - nodeR2.value - nodeR3.value - nodeR4.value - nodeR5.value) < EPS) return 0;
+                return (nodeR1.value - nodeR2.value - nodeR3.value - nodeR4.value - nodeR5.value) > 0 ? +1 : -1;
+            }
+        };
+
+       public void route(Router[] routers){
+
+       }
+
+
+        public RoutingTable getRoutingTable() {
+
+            //if routing table doesn't exist, create routingTable
+            if (routingTable == null) {
+                route(parentNetwork.getRouters());
+            }
+
+            return routingTable;
         }
 
-        return routingTable;
-    }
 
     public String getDeviceName() {
         return deviceName;
@@ -103,7 +139,7 @@ public class Router {
         return neighbors;
     }
 
-    public Node toNode(){
+    public com.example.networksimulator.Node toNode(){
         return new Node(deviceName, "Router");
     }
 
