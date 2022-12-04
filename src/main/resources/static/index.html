@@ -20,25 +20,32 @@
   <div id="container"></div>
 
 <div class="buttonsHolder">
-  <div>
-    <p>Please enter a device name to create a new Router:</p>
-    <input type="text" name="DeviceName" placeholder="Ex. R6">
-    <button class="custom-btn btn-3" type="button" id="createDeviceButton"><span>Create a Device!</span></button>
+  <h2>Change Routers</h2>
+  <h2>Change Edges</h2>
+  <div class="left">
+    <div class="inputMods">
+      <p>Please enter a device name to create a new Router:</p>
+      <input type="text" name="DeviceName" placeholder="Ex. R6">
+      <button class="custom-btn btn-3" type="button" id="createDeviceButton"><span>Create a Device!</span></button>
+    </div>
+    <div class="inputMods">
+      <p>Please enter a device name to delete a Router from the network:</p>
+      <input type="text" name="deleteDeviceName" placeholder="Ex. R2">
+      <button class="custom-btn btn-3" type="button" id="deleteDeviceButton"><span>Delete a Device!</span></button>
+    </div>
   </div>
-  <div>
-    <p>Please enter a device name to delete a Router from the network:</p>
-    <input type="text" name="deleteDeviceName" placeholder="Ex. R2">
-    <button class="custom-btn btn-3" type="button" id="deleteDeviceButton"><span>Delete a Device!</span></button>
-  </div>
-  <div>
-    <p>Please enter two device names and the cost to create a new edge:</p>
-    <input type="text" name="EdgeName" placeholder="Ex. R1,R2,100">
-    <button class="custom-btn btn-3" type="button" id="createEdgeButton"><span>Create an Edge!</span></button>
-  </div>
-  <div>
-    <p>Please enter two device names and the cost to delete an edge:</p>
-    <input type="text" name="EdgeName" placeholder="Ex. R2,R3,100">
-    <button class="custom-btn btn-3" type="button" id="deleteEdgeButton"><span>Delete an Edge!</span></button>
+
+<div class="right">
+    <div class="inputMods">
+      <p>Please enter two device names and the cost to create a new edge:</p>
+      <input type="text" name="EdgeName" placeholder="Ex. R1,R2,100">
+      <button class="custom-btn btn-3" type="button" id="createEdgeButton"><span>Create an Edge!</span></button>
+    </div>
+    <div class="inputMods">
+      <p>Please enter two device names and the cost to delete an edge:</p>
+      <input type="text" name="EdgeName" placeholder="Ex. R2,R3,100">
+      <button class="custom-btn btn-3" type="button" id="deleteEdgeButton"><span>Delete an Edge!</span></button>
+    </div>
   </div>
 </div>
 

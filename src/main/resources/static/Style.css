@@ -51,8 +51,20 @@ td{
 
 /*Button Styles*/
 .buttonsHolder{
-display: inline-block;
-    margin-top: 20px;
+    margin: 0 auto;
+}
+h2{
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+}
+.left,.right{
+    display: inline-flex;
+    width: 49%;
+    justify-content: center;
+}
+.inputMods{
+    width: 50%;
 }
 .button1{
     background-color: #000000;
