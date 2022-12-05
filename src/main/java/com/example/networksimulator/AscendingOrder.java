@@ -9,6 +9,11 @@ import java.util.Comparator;
 public class AscendingOrder implements Comparator<RouterDistance> {
     //sorts in ascending order by distance
     public int compare(RouterDistance a, RouterDistance b){
-        return a.compareTo(b);
+        if (a.distance < b.distance){
+            return -1;
+        } else if (a.distance > b.distance){
+            return 1;
+        }
+        return 0;
     }
 }

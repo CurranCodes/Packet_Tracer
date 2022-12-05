@@ -98,7 +98,7 @@ public class Router {
        String[][] finalPaths = new String[routers.length][2];
 
        //priority queue that will give us the router with the least distance first
-       PriorityQueue<RouterDistance> notFinalized = new PriorityQueue<>();
+       ArrayList<RouterDistance> notFinalized = new ArrayList<>();
 
        int index = 0;
 
@@ -117,7 +117,8 @@ public class Router {
 
        //runs until we have finalized our path/distance of each router
        while (!notFinalized.isEmpty()){
-           RouterDistance rd = notFinalized.poll();
+           notFinalized.sort(new AscendingOrder());
+           RouterDistance rd = notFinalized.remove(0);
            Router currRouter = rd.getR();
            int currDistance = rd.getDistance();
 
@@ -165,7 +166,6 @@ public class Router {
        PriorityQueue<RoutingTableRow> rows = new PriorityQueue<>(new AscendingOrderByID());
 
        for (String[] path : finalPaths){
-           System.out.println(path[1]);
            String line;
            int cost;
            if (path[1].equals("")){
