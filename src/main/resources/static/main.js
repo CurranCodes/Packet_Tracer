@@ -98,8 +98,9 @@ function displayRoutingTable(routerName){
 
         //creates the <tr> and <th> elements for the router name
         const tableHeaderRow = document.createElement('tr');
-        const tableHeader = document.createElement("th");
-        tableHeader.innerText = "Router Name: " + routerName;
+        const tableHeader = document.createElement('th');
+        tableHeader.className = "routingTableTitle"
+        tableHeader.innerText = "Routing Table for Router " + routerName;
 
         //appends the elements created
         tableHeaderRow.appendChild(tableHeader);
@@ -158,10 +159,6 @@ function displayRoutingTable(routerName){
         }
     }
     currentRoutingTableDisplayed = routerName;
-}
-
-function buildPacket(sourceName, destinationName){
-    packet = {source : sourceName, destination : destinationName};
 }
 
 function refresh(){
@@ -301,10 +298,49 @@ function displayRoutingTableFromListener(){
     }else displayRoutingTableInput.value = `Bad Format`;
 }
 
+function buildPacket(sourceName, destinationName){
+    packet = {source : sourceName, destination : destinationName};
+}
+
 //methodStub
 function routePacket(){
     if(routePacketInput.value.match(/R[0-9]+,R[0-9]+/)){
+        let input = routePacketInput.value.split(",");
+        packet = buildPacket(input[0], input[1]);
+        let currentRouterName = packet.source;
 
+        while (currentRouterName !== packet.destination){
+            //draw chart with packet in current router
+            removeAllChildNodes(chartContainer);
+
+            // create and draw a chart from the loaded data
+            chart = anychart.graph(networkJson);
+
+            //enable labels of nodes
+            chart.nodes().labels().enabled(true);
+            chart.edges().labels().enabled(true);
+
+            //configure labels of nodes
+            chart.nodes().labels().format("{%id}");
+            chart.nodes().labels().fontSize(12);
+            chart.nodes().labels().fontWeight(600);
+            chart.nodes().labels().fontColor("#00bfa5");
+
+            //configures labels of edges
+            chart.edges().labels().format("{%weight}");
+            chart.edges().labels().fontSize(12);
+            chart.edges().labels().fontWeight(600);
+
+            //disables interactivity (graph is static)
+            chart.interactivity().enabled(false);
+
+            //shows packet is in node
+            chart.group(currentRouterName).labels.format("Packet is in " + currentRouterName);
+            chart.group(currentRouterName).labels.fontColor("#b30c0c");
+
+            // draw the chart
+            chart.container("container").draw();
+        }
     } else {
         routePacketInput.value = "Bad Format";
     }
