@@ -6,10 +6,14 @@ const createDeviceButton = document.getElementById('createDeviceButton');
 const deleteDeviceButton = document.getElementById('deleteDeviceButton');
 const createEdgeButton = document.getElementById('createEdgeButton');
 const deleteEdgeButton = document.getElementById('deleteEdgeButton');
+const displayRoutingTableButton = document.getElementById('displayRoutingTableButton');
+const routePacketButton = document.getElementById('routePacketButton');
 const createDeviceInput = document.getElementById('createDeviceInput');
 const deleteDeviceInput = document.getElementById('deleteDeviceInput');
 const createEdgeInput = document.getElementById('createEdgeInput');
 const deleteEdgeInput = document.getElementById('deleteEdgeButton');
+const displayRoutingTableInput = document.getElementById('displayRoutingTableInput');
+const routePacketInput = document.getElementById('routePacketInput');
 
 
 //used to draw network
@@ -129,17 +133,23 @@ function displayRoutingTable(routerName){
             const currentDataRow = document.createElement('tr');
             currentDataRow.className = "data-row"; //added for css selection just in case
 
+            const destination = document.createElement('td');
+            destination.innerHTML = rows[key].destination;
+            currentDataRow.appendChild(destination);
+
             const line = document.createElement('td');
             line.innerHTML = rows[key].line;
             currentDataRow.appendChild(line);
 
             const cost = document.createElement('td');
-            cost.innerHTML = rows[key].cost;
+            if (rows[key].cost == 1000000){
+                cost.innerHTML = "UNREACHABLE";
+            } else {
+                cost.innerHTML = rows[key].cost;
+            }
             currentDataRow.appendChild(cost);
 
-            const destination = document.createElement('td');
-            destination.innerHTML = rows[key].destination;
-            currentDataRow.appendChild(destination);
+
 
             routingTableDOM.appendChild(currentDataRow);
         }

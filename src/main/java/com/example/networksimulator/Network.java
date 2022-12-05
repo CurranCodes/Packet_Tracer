@@ -37,7 +37,7 @@ public class Network {
 
             //checks to make sure the text was formatted correctly before continuing
             if (!routerStrings[i].matches(
-                    "(R[0-9]+: (\\(R[0-9]+, [0-9]+\\), )*\\(R[0-9]+, [0-9]+\\)).{0}"))
+                    "(R[0-9]+: (\\(R[0-9]+, [0-9]+\\), )*\\(R[0-9]+, [0-9]+\\)).{0}") && !routerStrings[i].matches("R[0-9]+: \\(\\)"))
             {
                 Exception e = new Exception ("Text File Not Formatted Correctly.");
                 throw e;
@@ -60,14 +60,16 @@ public class Network {
 
             String connectionString = routerString.split(": \\(")[1];
             connectionString.trim();
-            connectionString = connectionString.substring(0, connectionString.length() - 1);
-            String[] connections = connectionString.split("\\), \\(");
+            if(!connectionString.equals(")")){
+                connectionString = connectionString.substring(0, connectionString.length() - 1);
+                String[] connections = connectionString.split("\\), \\(");
 
 
-            for(String connection : connections){
-                String destRouterName = connection.split(", ")[0];
-                int cost = Integer.parseInt(connection.split(", ")[1]);
-                connectRouters(currRouterName, destRouterName, cost);
+                for(String connection : connections){
+                    String destRouterName = connection.split(", ")[0];
+                    int cost = Integer.parseInt(connection.split(", ")[1]);
+                    connectRouters(currRouterName, destRouterName, cost);
+                }
             }
         }
     }

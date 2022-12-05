@@ -168,9 +168,12 @@ public class Router {
        for (String[] path : finalPaths){
            String line;
            int cost;
-           if (path[1].equals("")){
+           if (path[0].equals(getDeviceName())) {
                line = "N.A.";
                cost = 0;
+           }else if(path[1].equals("")){
+               line = "N.A.";
+               cost = 1000000;
            } else {
                line = path[1].split(" ")[1];
                cost = getCost(line);
