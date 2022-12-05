@@ -1,6 +1,8 @@
 const url = 'http://localhost:8080';//the url of the website!
 let chart, networkJson, packet;
+let currentRoutingTableDisplayed = "R1";
 let routingTables = null;
+const chartContainer = document.getElementById('container');
 const routingTableDOM = document.getElementById('RoutingTable');
 const createDeviceButton = document.getElementById('createDeviceButton');
 const deleteDeviceButton = document.getElementById('deleteDeviceButton');
@@ -11,7 +13,7 @@ const routePacketButton = document.getElementById('routePacketButton');
 const createDeviceInput = document.getElementById('createDeviceInput');
 const deleteDeviceInput = document.getElementById('deleteDeviceInput');
 const createEdgeInput = document.getElementById('createEdgeInput');
-const deleteEdgeInput = document.getElementById('deleteEdgeButton');
+const deleteEdgeInput = document.getElementById('deleteEdgeInput');
 const displayRoutingTableInput = document.getElementById('displayRoutingTableInput');
 const routePacketInput = document.getElementById('routePacketInput');
 
@@ -69,7 +71,7 @@ function getRoutingTables(){
         if(http.readyState === 4 && http.status === 200) {
             const JsonResponse = http.responseText;
             routingTables = JSON.parse(JsonResponse);
-            displayRoutingTable('R1');
+            displayRoutingTable(currentRoutingTableDisplayed);
         }
     }
 
@@ -85,6 +87,7 @@ function findTable(routerName){
             return routingTables[key];
         }
     }
+    return null;
 }
 
 function displayRoutingTable(routerName){
@@ -154,66 +157,167 @@ function displayRoutingTable(routerName){
             routingTableDOM.appendChild(currentDataRow);
         }
     }
+    currentRoutingTableDisplayed = routerName;
 }
 
 function buildPacket(sourceName, destinationName){
     packet = {source : sourceName, destination : destinationName};
 }
 
-//methodStub
-function routePacket(sourceName, destinationName){
-    buildPacket(sourceName, destinationName);
-    var currentNode = sourceName;
-
-    while (!(currentNode === destinationName)){
-
-    }
-}
-
 function refresh(){
-    removeAllChildNodes(graph);
+    removeAllChildNodes(chartContainer);
     draw();
 }
 
 function createDevice(){
-        let args = createDeviceInput.input;
-        if(args === ''){
-            args = 'default';
+        if (createDeviceInput.value.match(/R[0-9]+/)) {
+            if (findTable(createDeviceInput.value) == null) {
+                let args = createDeviceInput.value;
+                if (args === '') {
+                    args = 'default';
+                }
+                let http = new XMLHttpRequest();
+
+                http.onreadystatechange = function () {
+                    if (http.readyState === 4 && http.status === 200) {
+                        createDeviceInput.value = http.responseText;
+                        refresh();
+                        routingTables = null;
+                        displayRoutingTable(currentRoutingTableDisplayed);
+                    }
+                }
+
+
+                let methodUrl = url + '/createDevice';
+
+                methodUrl += "?deviceName=" + args;
+                http.open("GET", methodUrl);
+                http.send();
+            } else {
+                createDeviceInput.value = "Device Already Exists";
+            }
+        } else {
+            createDeviceInput.value = "Bad Format";
         }
+}
+
+function deleteDevice(){
+    if (deleteDeviceInput.value.match(/R[0-9]+/)) {
+        let args = deleteDeviceInput.value;
         let http = new XMLHttpRequest();
 
         http.onreadystatechange = function () {
             if (http.readyState === 4 && http.status === 200) {
-                const JsonResponse = http.responseText;
-                routingTables = JSON.parse(JsonResponse);
+                deleteDeviceInput.value = http.responseText;
+                refresh();
+                routingTables = null;
+                displayRoutingTable(currentRoutingTableDisplayed);
             }
         }
 
 
-        let methodUrl = url + '/createDevice';
+        let methodUrl = url + '/deleteDevice';
 
         methodUrl += "?deviceName=" + args;
         http.open("GET", methodUrl);
         http.send();
-
-}
-
-function deleteDevice(){
-
+    } else {
+        deleteDeviceInput.value = "Bad Format";
+    }
 }
 
 function createEdge(){
+    if (createEdgeInput.value.match(/R[0-9]+,R[0-9]+,[0-9]+/)) {
+        let args = createEdgeInput.value;
+        if (args === '') {
+            createEdgeInput.value = "Incorrect Format";
+            return;
+        }
+        args = args.split(",");
+        args = "source=" + args[0] + "&dest=" + args[1] + "&cost=" + args[2];
 
+        let http = new XMLHttpRequest();
+
+        http.onreadystatechange = function () {
+            if (http.readyState === 4 && http.status === 200) {
+                createEdgeInput.value = http.responseText;
+                refresh();
+                routingTables = null;
+                displayRoutingTable(currentRoutingTableDisplayed);
+            }
+        }
+
+
+        let methodUrl = url + '/createEdge';
+
+        methodUrl += "?" + args;
+        http.open("GET", methodUrl);
+        http.send();
+    } else {
+        createEdgeInput.value = "Bad Format";
+    }
 }
 
 function deleteEdge(){
+    if(deleteEdgeInput.value.match(/R[0-9]+,R[0-9]+/)) {
+        let args = deleteEdgeInput.value;
+        if (args === '') {
+            deleteEdgeInput.value = "Incorrect Format";
+            return;
+        }
+        args = args.split(",");
+        args = "r1=" + args[0] + "&r2=" + args[1];
 
+        let http = new XMLHttpRequest();
+
+        http.onreadystatechange = function () {
+            if (http.readyState === 4 && http.status === 200) {
+                deleteDeviceInput.value = http.responseText;
+                refresh();
+                routingTables = null;
+                displayRoutingTable(currentRoutingTableDisplayed);
+            }
+        }
+
+
+        let methodUrl = url + '/deleteEdge';
+
+        methodUrl += "?" + args;
+        http.open("GET", methodUrl);
+        http.send();
+    } else {
+        deleteDeviceInput.value = "Bad Format";
+    }
 }
+
+function displayRoutingTableFromListener(){
+    if (displayRoutingTableInput.value.match(/R[0-9]+/)) {
+        if (findTable(displayRoutingTableInput.value) == null) {
+            displayRoutingTableInput.value = 'Device does not exist'
+        }else {
+            displayRoutingTable(displayRoutingTableInput.value);
+            displayRoutingTableInput.value = "Success!";
+        }
+    }else displayRoutingTableInput.value = `Bad Format`;
+}
+
+//methodStub
+function routePacket(){
+    if(routePacketInput.value.match(/R[0-9]+,R[0-9]+/)){
+
+    } else {
+        routePacketInput.value = "Bad Format";
+    }
+}
+
+
 //event listeners for all of our buttons
 createDeviceButton.addEventListener('click', createDevice);
 deleteDeviceButton.addEventListener('click', deleteDevice);
 createEdgeButton.addEventListener('click', createEdge);
 deleteEdgeButton.addEventListener('click', deleteEdge);
+displayRoutingTableButton.addEventListener('click', displayRoutingTableFromListener);
+routePacketButton.addEventListener('click', routePacket);
 
 anychart.onDocumentReady(draw());
 getRoutingTables();

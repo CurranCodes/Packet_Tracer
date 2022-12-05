@@ -61,19 +61,45 @@ public class NetworkSimulatorApplication {
     }
 
     @CrossOrigin(origins = "http://localhost:8080")
-    @GetMapping("/deleteRouter")
-    public String deleteRouter(@RequestParam(name = "ID") String routerName) {
-        network.deleteRouter(routerName);
-        return getNetworkJson();
-    }
-
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/getRoutingTables")
     public String getRoutingTables() {
         Gson gson = new Gson();
         return gson.toJson(network.routeAll());
     }
 
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/createDevice")
+    public String createDevice(@RequestParam(name = "deviceName") String routerName) throws Exception {
+        try {
+            network.createRouter(routerName);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return "Success";
+    }
+
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/deleteDevice")
+    public void deleteRouter(@RequestParam(name = "deviceName") String routerName) {
+        network.deleteRouter(routerName);
+    }
+
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/createEdge")
+    public String createEdge(@RequestParam(name = "source") String device1,
+                             @RequestParam(name = "dest") String device2,
+                             @RequestParam(name = "cost") String cost) {
+        network.connectRouters(device1, device2, Integer.parseInt(cost));
+        return "Success";
+    }
+
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/deleteEdge")
+    public String deleteEdge(@RequestParam(name = "r1") String device1,
+                             @RequestParam(name = "r2") String device2) {
+        network.disconnectRouters(device1, device2);
+        return "Success";
+    }
 
     public static String getNetworkJson(){
         Gson gson = new Gson();
