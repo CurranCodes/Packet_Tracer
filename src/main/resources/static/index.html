@@ -20,6 +20,20 @@
   <div id="container"></div>
 
 <div class="buttonsHolder">
+  <h2 class="middle">Network Routing</h2>
+  <div class="center">
+    <div class="inputMods lefty">
+      <p>Please enter a device name to display the routing table:</p>
+      <input type="text" name="displayTable" placeholder="Ex. R4" id ="displayRoutingTableInput">
+      <button class = "custom-btn btn-3" type="button" id="displayRoutingTableButton"><span>Display Routing Table!</span></button>
+    </div>
+    <div class="inputMods">
+      <p>Please enter two device names to route a packet:</p>
+      <input type="text" name = "routePacket" placeholder="R1,R5" id="routePacketInput">
+      <button class="custom-btn btn-3" type="button" id="routePacketButton"><span>Route Packet!</span></button>
+    </div>
+  </div>
+
   <h2>Change Routers</h2>
   <h2>Change Edges</h2>
   <div class="left">
@@ -48,13 +62,7 @@
     </div>
   </div>
 </div>
-<p>Please enter a device name to display the routing table:</p>
-<input type="text" name="displayTable" placeholder="Ex. R4" id ="displayRoutingTableInput">
-<button class = "custom-btn btn-3" type="button" id="displayRoutingTableButton">Display Routing Table!</button>
 
-<p>Please enter two device names to route a packet:</p>
-<input type="text" name = "routePacket" placeholder="R1,R5" id="routePacketInput">
-<button class="custom-btn btn-3" type="button" id="routePacketButton">Route Packet!</button>
 
 </body>
 <script src ="main.js"></script>

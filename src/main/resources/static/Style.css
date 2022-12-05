@@ -15,7 +15,7 @@ margin: 0 auto;
 #container {
     float: right;
     display: inline-block;
-    width: 77%;
+    width: 73%;
     height: 350px;
     border: 5px solid #1976d2;
     box-sizing: border-box;
@@ -23,7 +23,7 @@ margin: 0 auto;
 
 /*Table Styles*/
 .tableHolder{
-    width: 23%;
+    width: 27%;
     box-sizing: border-box;
     float:left;
     display: inline-block;
@@ -57,6 +57,20 @@ h2{
     display: inline-block;
     width: 49%;
     text-align: center;
+}
+.middle{
+    width: 100%;
+}
+.center {
+    display: inline-flex;
+    justify-content: center;
+    margin-left: 23%;
+}
+.center .inputMods {
+    width: 46%;
+}
+.inputMods .lefty {
+    margin-right: 18px;
 }
 .left,.right{
     display: inline-flex;
