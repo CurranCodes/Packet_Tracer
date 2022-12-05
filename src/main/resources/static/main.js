@@ -1,6 +1,17 @@
-//used to draw initial network
+const url = 'http://localhost:8080';//the url of the website!
 let chart, networkJson, routingTables, packet;
 const routingTableDOM = document.getElementById('RoutingTable');
+const createDeviceButton = document.getElementById('createDeviceButton');
+const deleteDeviceButton = document.getElementById('deleteDeviceButton');
+const createEdgeButton = document.getElementById('createEdgeButton');
+const deleteEdgeButton = document.getElementById('deleteEdgeButton');
+const createDeviceInput = document.getElementById('createDeviceInput');
+const deleteDeviceInput = document.getElementById('deleteDeviceInput');
+const createEdgeInput = document.getElementById('createEdgeInput');
+const deleteEdgeInput = document.getElementById('deleteEdgeButton');
+
+
+//used to draw network
 function draw() {
     const http = new XMLHttpRequest();
 
@@ -38,8 +49,8 @@ function draw() {
     }
 
 
-    const url = 'http://localhost:8080/getNetworkGraph';
-    http.open("GET", url);
+    const methodUrl = url + '/getNetworkGraph';
+    http.open("GET", methodUrl);
     http.send();
 }
 
@@ -60,8 +71,8 @@ function getRoutingTables(){
     }
 
 
-    const url = 'http://localhost:8080/getRoutingTables';
-    http.open("GET", url);
+    const methodUrl = url + '/getRoutingTables';
+    http.open("GET", methodUrl);
     http.send();
 }
 
@@ -145,6 +156,51 @@ function routePacket(sourceName, destinationName){
 
     }
 }
+
+function refresh(){
+    removeAllChildNodes(graph);
+    draw();
+}
+
+function createDevice(){
+        let args = createDeviceInput.input;
+        if(args === ''){
+            args = 'default';
+        }
+        let http = new XMLHttpRequest();
+
+        http.onreadystatechange = function () {
+            if (http.readyState === 4 && http.status === 200) {
+                const JsonResponse = http.responseText;
+                routingTables = JSON.parse(JsonResponse);
+            }
+        }
+
+
+        let methodUrl = url + '/createDevice';
+
+        methodUrl += "?deviceName=" + args;
+        http.open("GET", methodUrl);
+        http.send();
+
+}
+
+function deleteDevice(){
+
+}
+
+function createEdge(){
+
+}
+
+function deleteEdge(){
+
+}
+//event listeners for all of our buttons
+createDeviceButton.addEventListener('click', createDevice);
+deleteDeviceButton.addEventListener('click', deleteDevice);
+createEdgeButton.addEventListener('click', createEdge);
+deleteEdgeButton.addEventListener('click', deleteEdge);
 
 
 anychart.onDocumentReady(draw());
