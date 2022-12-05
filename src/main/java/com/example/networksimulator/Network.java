@@ -229,7 +229,8 @@ public class Network {
     }
 
     public Router[] getRouters(){
-        return (Router[]) routers.toArray();
+        Router[] routerArr = new Router[routers.size()];
+        return routers.toArray(routerArr);
     }
 
     public NetworkGraph toNetworkGraph(){
@@ -262,7 +263,8 @@ public class Network {
 
     //creates routing table on each router
     public RoutingTable[] routeAll(){
-        Router[] routerArr = (Router[]) routers.toArray();
+        Router[] routerArr = new Router[routers.size()];
+        routerArr = routers.toArray(routerArr);
         RoutingTable[] allTables = new RoutingTable[routers.size()];
         int index = 0;
 
