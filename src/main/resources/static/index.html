@@ -48,11 +48,14 @@
     </div>
   </div>
 </div>
+<p>Please enter a device name to display the routing table:</p>
+<input type="text" name="displayTable" placeholder="Ex. R4" id ="displayRoutingTableInput">
+<button class = "custom-btn btn-3" type="button" id="displayRoutingTableButton">Display Routing Table!</button>
 
-<input id="displayRoutingTableInput">
-<button id="displayRoutingTableButton"></button>
-<input id="routePacketInput">
-<button id="routePacketButton"></button>
+<p>Please enter two device names to route a packet:</p>
+<input type="text" name = "routePacket" placeholder="R1,R5" id="routePacketInput">
+<button class="custom-btn btn-3" type="button" id="routePacketButton">Route Packet!</button>
+
 </body>
 <script src ="main.js"></script>
 </html>
