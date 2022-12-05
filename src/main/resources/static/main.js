@@ -1,5 +1,6 @@
 const url = 'http://localhost:8080';//the url of the website!
-let chart, networkJson, routingTables, packet;
+let chart, networkJson, packet;
+let routingTables = null;
 const routingTableDOM = document.getElementById('RoutingTable');
 const createDeviceButton = document.getElementById('createDeviceButton');
 const deleteDeviceButton = document.getElementById('deleteDeviceButton');
@@ -40,9 +41,6 @@ function draw() {
             //disables interactivity (graph is static)
             chart.interactivity().enabled(false);
 
-            //configure labels of nodes
-
-
             // draw the chart
             chart.container("container").draw();
         }
@@ -67,6 +65,7 @@ function getRoutingTables(){
         if(http.readyState === 4 && http.status === 200) {
             const JsonResponse = http.responseText;
             routingTables = JSON.parse(JsonResponse);
+            displayRoutingTable('R1');
         }
     }
 
@@ -78,26 +77,29 @@ function getRoutingTables(){
 
 function findTable(routerName){
     for(const key in routingTables){
-        if (key.routerName === routerName){
-            return key;
+        if (routingTables[key].routerName === routerName){
+            return routingTables[key];
         }
     }
 }
 
 function displayRoutingTable(routerName){
-    removeAllChildNodes(routingTableDOM);
+    if (routingTables == null){
+        getRoutingTables();
+    } else {
+        removeAllChildNodes(routingTableDOM);
 
-    //creates the <tr> and <th> elements for the router name
+        //creates the <tr> and <th> elements for the router name
         const tableHeaderRow = document.createElement('tr');
         const tableHeader = document.createElement("th");
         tableHeader.innerText = "Router Name: " + routerName;
 
-    //appends the elements created
+        //appends the elements created
         tableHeaderRow.appendChild(tableHeader);
         routingTableDOM.appendChild(tableHeaderRow);
 
-    // creates a 'keyRow' with data which lets the user know
-    // what each data field is for and appends it to the table
+        // creates a 'keyRow' with data which lets the user know
+        // what each data field is for and appends it to the table
         const keyRow = document.createElement('tr');
         keyRow.className = "keyRow";
 
@@ -115,32 +117,33 @@ function displayRoutingTable(routerName){
 
         routingTableDOM.appendChild(keyRow);
 
-    // Dynamically populates the rest of the table with the correct routing table object fields that were
-    // passed from backend
+        // Dynamically populates the rest of the table with the correct routing table object fields that were
+        // passed from backend
 
         //gets the object that corresponds to a certain routing table
         const rows = findTable(routerName).rows;
 
         //iterates through routing table object rows and creates corresponding <tr> elements to add to the
         //routing table in the DOM
-        for (const key in rows){
+        for (const key in rows) {
             const currentDataRow = document.createElement('tr');
             currentDataRow.className = "data-row"; //added for css selection just in case
 
             const line = document.createElement('td');
-            line.innerHTML = key.line;
+            line.innerHTML = rows[key].line;
             currentDataRow.appendChild(line);
 
             const cost = document.createElement('td');
-            cost.innerHTML = key.cost;
+            cost.innerHTML = rows[key].cost;
             currentDataRow.appendChild(cost);
 
             const destination = document.createElement('td');
-            destination.innerHTML = key.destination;
+            destination.innerHTML = rows[key].destination;
             currentDataRow.appendChild(destination);
 
             routingTableDOM.appendChild(currentDataRow);
         }
+    }
 }
 
 function buildPacket(sourceName, destinationName){
@@ -202,9 +205,8 @@ deleteDeviceButton.addEventListener('click', deleteDevice);
 createEdgeButton.addEventListener('click', createEdge);
 deleteEdgeButton.addEventListener('click', deleteEdge);
 
-
 anychart.onDocumentReady(draw());
 getRoutingTables();
-displayRoutingTable('R1')
+
 
 //DO NOT TOUCH ABOVE THIS LINE LOL
