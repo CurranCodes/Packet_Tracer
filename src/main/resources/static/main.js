@@ -99,7 +99,7 @@ function displayRoutingTable(routerName){
         //creates the <tr> and <th> elements for the router name
         const tableHeaderRow = document.createElement('tr');
         const tableHeader = document.createElement('th');
-        tableHeader.className = "routingTableTitle"
+        tableHeader.className = "routingTableTitle";
         tableHeader.innerText = "Routing Table for Router " + routerName;
 
         //appends the elements created
