@@ -94,24 +94,22 @@ public class Router {
 //       }
 
        //first entry is routerName second entry is it's corresponding shortestPath
-       //Keeps track of the finalPath of a certain Node
-       String[][] finalPath = new String[routers.length][2];
-
-       int[][] nodeDistance = new int[routers.length][2];
+       //Keeps track of the finalPaths of a certain Node
+       String[][] finalPaths = new String[routers.length][2];
 
        //priority queue that will give us the router with the least distance first
-       PriorityQueue<RouterDistance> notFinalized = new PriorityQueue<>(new ascendingOrder());
+       PriorityQueue<RouterDistance> notFinalized = new PriorityQueue<>();
 
        int index = 0;
 
        //adds all routers that are not this one, to notFinalized.
        for(Router r : routers){
-           //instantiate a path for each router in finalPath
-               finalPath[index][0] = r.getDeviceName();
-               finalPath[index][1] = "";
+           //instantiate a path for each router in finalPaths
+               finalPaths[index][0] = r.getDeviceName();
+               finalPaths[index][1] = "";
 
            //updates notFinalized for each router accordingly
-               if (r != this) notFinalized.add(new RouterDistance(r, Integer.MAX_VALUE));
+               if (r != this) notFinalized.add(new RouterDistance(r, 99999999));
                else notFinalized.add(new RouterDistance(r, 0));
 
          index++;
@@ -119,7 +117,7 @@ public class Router {
 
        //runs until we have finalized our path/distance of each router
        while (!notFinalized.isEmpty()){
-           RouterDistance rd = notFinalized.remove();
+           RouterDistance rd = notFinalized.poll();
            Router currRouter = rd.getR();
            int currDistance = rd.getDistance();
 
@@ -142,13 +140,18 @@ public class Router {
 
                        String[] pathToAdd = new String[2];
                        String[] pathToUpdate = new String[2];
-
-                       for (String[] currPath : finalPath){
+                       int numFound = 0;
+                       for (String[] currPath : finalPaths){
                            if (currPath[0].equals(neighbor.getDeviceName())){
                                pathToUpdate = currPath;
+                               numFound++;
                            }
                            if (currPath[0].equals(currRouter.getDeviceName())){
                                pathToAdd = currPath;
+                               numFound++;
+                           }
+                           if (numFound == 2){
+                               break;
                            }
                        }
 
@@ -159,8 +162,30 @@ public class Router {
            }
        }
 
+       PriorityQueue<RoutingTableRow> rows = new PriorityQueue<>(new AscendingOrderByID());
+
+       for (String[] path : finalPaths){
+           System.out.println(path[1]);
+           String line;
+           int cost;
+           if (path[1].equals("")){
+               line = "N.A.";
+               cost = 0;
+           } else {
+               line = path[1].split(" ")[1];
+               cost = getCost(line);
+           }
 
 
+           rows.add(new RoutingTableRow(path[0], line , cost));
+       }
+
+       RoutingTableRow[] rowsArr = new RoutingTableRow[routers.length];
+       rowsArr = rows.toArray(rowsArr);
+
+       routingTable = new RoutingTable(deviceName, rowsArr);
+
+       System.out.println(routingTable);
    }
 
    public void clearRoutingTable(){
@@ -247,6 +272,15 @@ public class Router {
             }
         }
         return -1;
+    }
+
+    private int getCost(String routerName){
+       for(String[] costEntry : costList){
+           if (costEntry[0].equals(routerName)){
+               return Integer.parseInt(costEntry[1]);
+           }
+       }
+       return -1;
     }
 
     @Override

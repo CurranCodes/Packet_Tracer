@@ -1,8 +1,10 @@
 package com.example.networksimulator;
 
-public class RouterDistance {
+import org.jetbrains.annotations.NotNull;
+
+public class RouterDistance implements Comparable {
     private final Router r;
-    private int distance;
+    public int distance;
 
     public RouterDistance (Router r, int distance){
         this.r = r;
@@ -19,5 +21,10 @@ public class RouterDistance {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        return distance - ((RouterDistance)o).distance;
     }
 }

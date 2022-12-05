@@ -12,6 +12,10 @@ public class RoutingTableRow {
         this.cost = cost;
     }
 
+    public String getDestination(){
+        return destination;
+    }
+
     @Override
     public String toString(){
         String routingTableRow = "Destination: ";
