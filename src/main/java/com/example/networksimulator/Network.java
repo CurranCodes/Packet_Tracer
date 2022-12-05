@@ -92,6 +92,7 @@ public class Network {
 
     public void deleteRouter(String routerName){
         Router router = getRouterPointer(routerName);
+        assert router != null;
         ArrayList<Router> neighbors = router.getNeighbors();
 
         //disconnects all connections of the router to be deleted
@@ -263,6 +264,7 @@ public class Network {
 
     //creates routing table on each router
     public RoutingTable[] routeAll(){
+        clearAllRoutingTables();//clears all the routing tables before creating new ones
         Router[] routerArr = new Router[routers.size()];
         routerArr = routers.toArray(routerArr);
         RoutingTable[] allTables = new RoutingTable[routers.size()];
@@ -275,6 +277,12 @@ public class Network {
         }
 
         return allTables;
+    }
+
+    private void clearAllRoutingTables(){
+        for (Router router: routers){
+            router.clearRoutingTable();
+        }
     }
 
     @Override

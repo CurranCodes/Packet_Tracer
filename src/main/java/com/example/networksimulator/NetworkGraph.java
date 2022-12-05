@@ -8,6 +8,4 @@ public class NetworkGraph {
         this.nodes = nodes;
         this.edges = edges;
     }
-
-
 }

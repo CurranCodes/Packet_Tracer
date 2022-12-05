@@ -3,8 +3,8 @@
 
 package com.example.networksimulator;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Router {
     Network parentNetwork;
@@ -19,8 +19,8 @@ public class Router {
 
     //an ArrayList of String arrays that contain a router name in index 0 and a costList in index 1
     private final ArrayList<String[]> costList;
-
     private RoutingTable routingTable;
+    private static final double EPS = 1e-6;
 
     Router(String deviceName, Network parentNetwork){
         this.parentNetwork = parentNetwork;
@@ -30,29 +30,165 @@ public class Router {
     }
 
     /** This method is for you to implement Maysam! **/
-    public void route(Router[] routers){
-        //TODO: construct a routing table dynamically given the values of our instance variables
-        neighbors.size();
+    //encapsulated your work within the route method as was expected
+    //also you do not populate the routing table anywhere in your work
+   public void route(Router[] routers){
+       //commented your current implementation out so we can iterate upon it
+//       class Edge {
+//           double cost;
+//           int from, to;
+//           public Edge(int from, int to, double cost) {
+//               this.from = from;
+//               this.to = to;
+//               this.cost = cost;
+//           }
+//       }
+//       class Node {
+//           int id;
+//           double value;
+//
+//           public Node(int id, double value) {
+//               this.id = id;
+//               this.value = value;
+//           }
+//
+//           public Node(String deviceName, String router) {
+//           }
+//       }
+//
+//       int n;
+//       double[] dist;
+//       Integer[] prev;
+//       List<List<Edge>> graph;
+//
+//       Comparator<Node> comparator = new Comparator<Node>() {
+//           @Override
+//           public int compare(Node R1, Node R2) {
+//               return 0;
+//           }
+//
+//           //Seems to be static, needs to be updated
+//           //    -Curran
+//           public int compare(Node nodeR1, Node nodeR2, Node nodeR3, Node nodeR4, Node nodeR5) {
+//               if (Math.abs(nodeR1.value - nodeR2.value - nodeR3.value - nodeR4.value - nodeR5.value) < EPS) return 0;
+//               return (nodeR1.value - nodeR2.value - nodeR3.value - nodeR4.value - nodeR5.value) > 0 ? +1 : -1;
+//           }
+//       };
 
-        //placeholder
-        for(Router router: neighbors){
-            System.out.println(router.deviceName);
-        }
+       //Keeps track of the current minimum distance between our node and another
+//       int[][] distanceMatrix = new int[routers.length][2];
+//       int index = 0;
+//
+//       for (int[] distanceEntry : distanceMatrix){
+//           distanceEntry[0] = routers[index].getDeviceName();
+//           if(routers[index] != this) {
+//               distanceEntry[2] = Integer.toString(Integer.MAX_VALUE);//"infinity"
+//           } else{
+//               distanceEntry[2] = "0";
+//           }
+//       }
+//
+//
+//       for (Router dest : routers){
+//           if
+//       }
 
-        this.routingTable = routingTable;
+       //first entry is routerName second entry is it's corresponding shortestPath
+       //Keeps track of the finalPath of a certain Node
+       String[][] finalPath = new String[routers.length][2];
+
+       int[][] nodeDistance = new int[routers.length][2];
+
+       //priority queue that will give us the router with the least distance first
+       PriorityQueue<RouterDistance> notFinalized = new PriorityQueue<>(new ascendingOrder());
+
+       int index = 0;
+
+       //adds all routers that are not this one, to notFinalized.
+       for(Router r : routers){
+           //instantiate a path for each router in finalPath
+               finalPath[index][0] = r.getDeviceName();
+               finalPath[index][1] = "";
+
+           //updates notFinalized for each router accordingly
+               if (r != this) notFinalized.add(new RouterDistance(r, Integer.MAX_VALUE));
+               else notFinalized.add(new RouterDistance(r, 0));
+
+         index++;
+       }
+
+       //runs until we have finalized our path/distance of each router
+       while (!notFinalized.isEmpty()){
+           RouterDistance rd = notFinalized.remove();
+           Router currRouter = rd.getR();
+           int currDistance = rd.getDistance();
+
+           ArrayList<Router> currRouterNeighbors = currRouter.getNeighbors();
+
+           //converts notFinalized to an array for random access
+           RouterDistance[] rdArr = new RouterDistance[notFinalized.size()];
+           rdArr = notFinalized.toArray(rdArr);
+
+           for (Router neighbor : currRouterNeighbors){
+               for(int i = 0; i < rdArr.length; i++){
+                   //enters only if the current neighbor is not finalized
+                   //AND the router distance is strictly grater than the distance
+                   // of our current router plus the edge
+                   if (rdArr[i].getR() == neighbor &&
+                           ((currRouter.getCost(neighbor) + currDistance) < rdArr[i].getDistance()))
+                   {
+                       //update distance entry
+                       rdArr[i].setDistance((currRouter.getCost(neighbor) + currDistance));
+
+                       String[] pathToAdd = new String[2];
+                       String[] pathToUpdate = new String[2];
+
+                       for (String[] currPath : finalPath){
+                           if (currPath[0].equals(neighbor.getDeviceName())){
+                               pathToUpdate = currPath;
+                           }
+                           if (currPath[0].equals(currRouter.getDeviceName())){
+                               pathToAdd = currPath;
+                           }
+                       }
+
+                       //updates our path
+                       pathToUpdate[1] = pathToAdd[1] + " " + neighbor.getDeviceName();
+                   }
+               }
+           }
+       }
+
+
+
+   }
+
+   public void clearRoutingTable(){
+       routingTable = null;
     }
 
-    public RoutingTable getRoutingTable(){
+
+    public RoutingTable getRoutingTable() {
+
         //if routing table doesn't exist, create routingTable
-        if (routingTable == null){
+        if (routingTable == null) {
             route(parentNetwork.getRouters());
         }
 
         return routingTable;
     }
 
+    public ArrayList<Router> getNeighbors(){
+        return neighbors;
+    }
+
+
     public String getDeviceName() {
         return deviceName;
+    }
+
+    private int getDeviceNum(){
+       return Integer.parseInt(deviceName.split("R")[1]);
     }
 
     // "Removes" a connection associated with a given destination device and returns true
@@ -99,12 +235,8 @@ public class Router {
         return false;
     }
 
-    public ArrayList<Router> getNeighbors(){
-        return neighbors;
-    }
-
     public Node toNode(){
-        return new Node(deviceName, "Router");
+           return new Node(deviceName);
     }
 
     //gets the cost of a certain edge
