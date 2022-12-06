@@ -2,10 +2,7 @@
 
 A network simulator that utilizes a GUI to show packets flowing in a certain network
 
-***This Project is Currently in Development***
-
-The goal of this project is to create an application that can simulate a network from a given text file. 
-This network will then be displayed via the GUI and can be edited dynamically by the user through the GUI.
+This application simulates a network from a given text file. The network is then connected to port localhost:8080 and uses a HTML dom as a GUI.
 
 A certain device can be selected as the sender, another can be selected as the receiver. 
 The GUI will then show the flow of packets between both devices through the configured network.
