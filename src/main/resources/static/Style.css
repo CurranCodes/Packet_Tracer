@@ -109,24 +109,42 @@ h2{
     4px 4px 5px 0px rgba(0,0,0,.1);
     outline: none;
 }
-/*Disabled Button Styling*/
-.disableButton:hover{
+/*Disabled styles*/
+.disabledButton {
+    background-color:#d7d8d9 !important;
+    background:#d7d8d9 !important;
+    color:#adadad !important;
+    box-shadow:none;
+}
+.disabledButton:hover{
     background-color:#d7d8d9 !important;
     background:#d7d8d9 !important;
     color:#adadad !important;
 }
-.disableButton.btn-3 span:hover{
+.disabledButton.btn-3 span:hover{
     color:#adadad !important;
 }
-.disableButton.btn-3:hover:before,
-.disableButton.btn-3:hover:after{
+.disabledButton.btn-3:hover:before,
+.disabledButton.btn-3:hover:after{
     background:none !important;
+    transition:none !important;
 }
-.disableButton span:hover:before,
-.disableButton span:hover:after{
+.disabledButton.btn-3 span:hover:before,
+.disabledButton.btn-3 span:hover:after{
     background:none !important;
+    transition:none !important;
 }
-/*END Disabled Button Styling*/
+.disabledButton.btn-3:before,
+.disabledButton.btn-3:after{
+    background:none !important;
+    transition:none !important;
+}
+.disabledButton.btn-3 span:before,
+.disabledButton.btn-3 span:after{
+    background:none !important;
+    transition:none !important;
+}
+/*End Disabled styles*/
 
 .btn-3 {
     background: rgb(0,172,238);
