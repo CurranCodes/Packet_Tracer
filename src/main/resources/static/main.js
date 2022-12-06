@@ -2,6 +2,7 @@ const url = 'http://localhost:8080';//the url of the website!
 let chart, networkJson, packet;
 let currentRoutingTableDisplayed = "R1";
 let routingTables = null;
+let buttonsLocked = false;
 const chartContainer = document.getElementById('container');
 const routingTableDOM = document.getElementById('RoutingTable');
 const createDeviceButton = document.getElementById('createDeviceButton');
@@ -56,6 +57,27 @@ function draw() {
     const methodUrl = url + '/getNetworkGraph';
     http.open("GET", methodUrl);
     http.send();
+}
+
+//keeps the user from calling functions during a critical section
+function toggleButtonLock(){
+    if (buttonsLocked === false) {
+        buttonsLocked = true;
+        createDeviceButton.className = "disabledButton";
+        deleteDeviceButton.className = "disabledButton";
+        createEdgeButton.className = "disabledButton";
+        deleteEdgeButton.className = "disabledButton";
+        displayRoutingTableButton.className = "disabledButton";
+        routePacketButton.className = "disabledButton";
+    } else {
+        buttonsLocked = false;
+        createDeviceButton.className = "custom-btn btn-3";
+        deleteDeviceButton.className = "custom-btn btn-3";
+        createEdgeButton.className = "custom-btn btn-3";
+        deleteEdgeButton.className = "custom-btn btn-3";
+        displayRoutingTableButton.className = "custom-btn btn-3";
+        routePacketButton.className = "custom-btn btn-3";
+    }
 }
 
 function removeAllChildNodes(parent) {
@@ -167,6 +189,9 @@ function refresh(){
 }
 
 function createDevice(){
+        if (buttonsLocked===true){
+            return;
+        }
         if (createDeviceInput.value.match(/R[0-9]+/)) {
             if (findTable(createDeviceInput.value) == null) {
                 let args = createDeviceInput.value;
@@ -199,6 +224,9 @@ function createDevice(){
 }
 
 function deleteDevice(){
+    if (buttonsLocked===true){
+        return;
+    }
     if (deleteDeviceInput.value.match(/R[0-9]+/)) {
         let args = deleteDeviceInput.value;
         let http = new XMLHttpRequest();
@@ -224,6 +252,9 @@ function deleteDevice(){
 }
 
 function createEdge(){
+    if (buttonsLocked===true){
+        return;
+    }
     if (createEdgeInput.value.match(/R[0-9]+,R[0-9]+,[0-9]+/)) {
         let args = createEdgeInput.value;
         if (args === '') {
@@ -256,6 +287,9 @@ function createEdge(){
 }
 
 function deleteEdge(){
+    if (buttonsLocked===true){
+        return;
+    }
     if(deleteEdgeInput.value.match(/R[0-9]+,R[0-9]+/)) {
         let args = deleteEdgeInput.value;
         if (args === '') {
@@ -288,6 +322,9 @@ function deleteEdge(){
 }
 
 function displayRoutingTableFromListener(){
+    if (buttonsLocked===true){
+        return;
+    }
     if (displayRoutingTableInput.value.match(/R[0-9]+/)) {
         if (findTable(displayRoutingTableInput.value) == null) {
             displayRoutingTableInput.value = 'Device does not exist'
@@ -299,17 +336,29 @@ function displayRoutingTableFromListener(){
 }
 
 function buildPacket(sourceName, destinationName){
-    packet = {source : sourceName, destination : destinationName};
+    return packet = {source : sourceName, destination : destinationName};
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 //methodStub
-function routePacket(){
+async function routePacket(){
+    if (buttonsLocked===true){
+        return;
+    }
     if(routePacketInput.value.match(/R[0-9]+,R[0-9]+/)){
+        toggleButtonLock();
         let input = routePacketInput.value.split(",");
         packet = buildPacket(input[0], input[1]);
         let currentRouterName = packet.source;
 
         while (currentRouterName !== packet.destination){
+            //updates the currently displayed routing table to the one
+            //that belongs to the router that the packet current resides at
+            displayRoutingTable(currentRouterName);
+
             //draw chart with packet in current router
             removeAllChildNodes(chartContainer);
 
@@ -334,13 +383,129 @@ function routePacket(){
             //disables interactivity (graph is static)
             chart.interactivity().enabled(false);
 
+            var routerWithPacket = chart.group(currentRouterName);
+
             //shows packet is in node
-            chart.group(currentRouterName).labels.format("Packet is in " + currentRouterName);
-            chart.group(currentRouterName).labels.fontColor("#b30c0c");
+            routerWithPacket.labels().format("Packet is in " + currentRouterName);
+            routerWithPacket.labels().fontColor("#b30c0c");
+            routerWithPacket.normal().shape("star6");
+            routerWithPacket.normal().fill("#b30c0c");
 
             // draw the chart
             chart.container("container").draw();
+
+            await sleep(3000);
+
+            //draw sending line
+            removeAllChildNodes(chartContainer);
+
+            let currentRoutingTable = findTable(currentRouterName);
+            let line = "";
+
+            for (const key in currentRoutingTable.rows){
+                if (currentRoutingTable.rows[key].destination === packet.destination){
+                    line = currentRoutingTable.rows[key].line;
+                }
+            }
+
+            if (line === "N.A."){
+                routePacketInput.value = "No Possible Route Exists";
+                toggleButtonLock();
+                refresh();
+                return;
+            }
+
+            // create and draw a chart from the loaded data
+            let tempNetworkJson = JSON.parse(JSON.stringify(networkJson));
+            let realisticWaitTime = 0;
+            let stringEdgeLabel = "Sending to " + line;
+            for (var key in tempNetworkJson.edges){
+                if ((tempNetworkJson.edges[key].from === line && tempNetworkJson.edges[key].to === currentRouterName)
+                    || (tempNetworkJson.edges[key].to === line && tempNetworkJson.edges[key].from === currentRouterName)){
+                    realisticWaitTime = tempNetworkJson.edges[key].cost;
+                    tempNetworkJson.edges[key] = {from : tempNetworkJson.edges[key].from,
+                        to : tempNetworkJson.edges[key].to, cost : stringEdgeLabel,
+                        normal: {stroke:  {
+                                color: "#b30c0c",
+                                thickness: "4",
+                                dash: "10 5",
+                                lineJoin: "round"
+                            }
+                        }}
+                }
+            }
+
+            chart = anychart.graph(tempNetworkJson);
+
+            //enable labels of nodes
+            chart.nodes().labels().enabled(true);
+            chart.edges().labels().enabled(true);
+
+            //configure labels of nodes
+            chart.nodes().labels().format("{%id}");
+            chart.nodes().labels().fontSize(12);
+            chart.nodes().labels().fontWeight(600);
+            chart.nodes().labels().fontColor("#00bfa5");
+
+            //configures labels of edges
+            chart.edges().labels().format("{%weight}");
+            chart.edges().labels().fontSize(12);
+            chart.edges().labels().fontWeight(600);
+
+            //disables interactivity (graph is static)
+            chart.interactivity().enabled(false);
+
+            // draw the chart
+            chart.container("container").draw();
+
+            currentRouterName = line;
+
+            await sleep(3000);
         }
+
+        //draw arrival
+        displayRoutingTable(currentRouterName);
+
+        //draw chart with packet in current router
+        removeAllChildNodes(chartContainer);
+
+        // create and draw a chart from the loaded data
+        chart = anychart.graph(networkJson);
+
+        //enable labels of nodes
+        chart.nodes().labels().enabled(true);
+        chart.edges().labels().enabled(true);
+
+        //configure labels of nodes
+        chart.nodes().labels().format("{%id}");
+        chart.nodes().labels().fontSize(12);
+        chart.nodes().labels().fontWeight(600);
+        chart.nodes().labels().fontColor("#00bfa5");
+
+        //configures labels of edges
+        chart.edges().labels().format("{%weight}");
+        chart.edges().labels().fontSize(12);
+        chart.edges().labels().fontWeight(600);
+
+        //disables interactivity (graph is static)
+        chart.interactivity().enabled(false);
+
+        var routerWithPacket = chart.group(currentRouterName);
+
+        //shows packet is in node
+        routerWithPacket.labels().format("Packet Has Arrived at Router " + currentRouterName);
+        routerWithPacket.labels().fontColor("#0d9aff");
+        routerWithPacket.normal().shape("star5");
+        routerWithPacket.normal().fill("#ffe70d");
+
+        // draw the chart
+        chart.container("container").draw();
+
+        await sleep(5000);
+
+        refresh();
+        toggleButtonLock();
+        routePacketInput.value = "Success!";
     } else {
         routePacketInput.value = "Bad Format";
     }

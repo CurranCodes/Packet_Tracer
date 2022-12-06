@@ -21,7 +21,7 @@ public class NetworkSimulatorApplication {
         try {
             // replace this string argument with the file path of your choice
             // relative to the NetworkSimulator Directory
-            network = new Network("InitialConfig.txt");
+            network = new Network("../InitialConfig.txt");
         } catch (Exception e){
             System.out.println(e);
         }
@@ -29,23 +29,6 @@ public class NetworkSimulatorApplication {
         /** PUT CODE BELOW HERE YOU WANT TO TEST**/
         // prints network config
         System.out.println(network);
-
-        //tests json string of initial config
-        Gson gson = new Gson();
-        String graphJSON = gson.toJson(network.toNetworkGraph());
-        System.out.println(graphJSON);
-
-        //displays a routing tables data
-        RoutingTableRow routingTableRow = new RoutingTableRow("R1", "R3", 300);
-        RoutingTableRow[] routingTableRows = {routingTableRow};
-        RoutingTable routingTable = new RoutingTable("R2", routingTableRows);
-
-        System.out.println(routingTable);
-
-//        A way to get and print a specific routing table associated to a certain router
-//        System.out.println(network.getRouter("R1").getRoutingTable());
-
-
 
         /** PUT CODE ABOVE HERE YOU WANT TO TEST**/
 
