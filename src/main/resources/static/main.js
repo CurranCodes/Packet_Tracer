@@ -343,7 +343,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//methodStub
 async function routePacket(){
     if (buttonsLocked===true){
         return;
