@@ -10,8 +10,8 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>NetworkSimulator</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <version>1.0</version>
+    <packaging>jar</packaging>
     <name>NetworkSimulator</name>
     <description>NetworkSimulator</description>
     <properties>
