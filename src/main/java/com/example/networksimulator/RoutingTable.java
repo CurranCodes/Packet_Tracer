@@ -16,7 +16,7 @@ public class RoutingTable {
 
     @Override
     public String toString(){
-        String routingTable = "routerName: " + routerName;
+        String routingTable = "\n\nrouterName: " + routerName;
 
         for (RoutingTableRow row : rows){
             routingTable += "\n\n" + row;

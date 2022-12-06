@@ -19,16 +19,15 @@ public class Network {
 
     public Network(String fileName) throws Exception {
 
-        File jarPath=new File(NetworkSimulatorApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        String filePath=jarPath.getParentFile().getParentFile().getParentFile().getAbsolutePath();
-        System.out.println(" filePath-"+ filePath);
+        File initialConfig = new File(fileName);
 
         routers = new ArrayList<>();
         nameTaken = new Hashtable<>();
         edgeTable = new Hashtable<>();
 
         //gets our file
-        BufferedReader br = new BufferedReader(new FileReader( "../" + fileName));
+        BufferedReader br = new BufferedReader(new FileReader("InitialConfig.txt"));
+        System.out.println("File Path: " + initialConfig.toURI().toString());
 
         //gets the amount of routers from the first line of the file
         int numRouters = Integer.parseInt(br.readLine());
