@@ -19,6 +19,10 @@ const displayRoutingTableInput = document.getElementById('displayRoutingTableInp
 const routePacketInput = document.getElementById('routePacketInput');
 
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 //used to draw network
 function draw() {
     const http = new XMLHttpRequest();
@@ -231,10 +235,11 @@ function deleteDevice(){
         let args = deleteDeviceInput.value;
         let http = new XMLHttpRequest();
 
-        http.onreadystatechange = function () {
+        http.onreadystatechange = async function () {
             if (http.readyState === 4 && http.status === 200) {
                 deleteDeviceInput.value = http.responseText;
                 refresh();
+                await sleep(300);
                 routingTables = null;
                 displayRoutingTable(currentRoutingTableDisplayed);
             }
@@ -266,10 +271,11 @@ function createEdge(){
 
         let http = new XMLHttpRequest();
 
-        http.onreadystatechange = function () {
+        http.onreadystatechange = async function () {
             if (http.readyState === 4 && http.status === 200) {
                 createEdgeInput.value = http.responseText;
                 refresh();
+                await sleep(300);
                 routingTables = null;
                 displayRoutingTable(currentRoutingTableDisplayed);
             }
@@ -301,10 +307,11 @@ function deleteEdge(){
 
         let http = new XMLHttpRequest();
 
-        http.onreadystatechange = function () {
+        http.onreadystatechange = async function () {
             if (http.readyState === 4 && http.status === 200) {
                 deleteDeviceInput.value = http.responseText;
                 refresh();
+                await sleep(300);
                 routingTables = null;
                 displayRoutingTable(currentRoutingTableDisplayed);
             }
@@ -337,10 +344,6 @@ function displayRoutingTableFromListener(){
 
 function buildPacket(sourceName, destinationName){
     return packet = {source : sourceName, destination : destinationName};
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function routePacket(){

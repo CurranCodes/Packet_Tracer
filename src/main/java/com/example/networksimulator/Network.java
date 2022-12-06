@@ -4,6 +4,7 @@
 package com.example.networksimulator;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -16,13 +17,18 @@ public class Network {
     private final Hashtable<String, Integer> edgeTable;
     private final Hashtable<Integer, Boolean> nameTaken;
 
-    public Network(String filePath) throws Exception {
+    public Network(String fileName) throws Exception {
+
+        File jarPath=new File(NetworkSimulatorApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        String filePath=jarPath.getParentFile().getParentFile().getParentFile().getAbsolutePath();
+        System.out.println(" filePath-"+ filePath);
+
         routers = new ArrayList<>();
         nameTaken = new Hashtable<>();
         edgeTable = new Hashtable<>();
 
         //gets our file
-        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        BufferedReader br = new BufferedReader(new FileReader( "../" + fileName));
 
         //gets the amount of routers from the first line of the file
         int numRouters = Integer.parseInt(br.readLine());

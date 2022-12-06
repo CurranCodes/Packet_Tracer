@@ -17,11 +17,12 @@ public class NetworkSimulatorApplication {
     public static Network network;
     public static String currentNetworkState;
     public static void main(String[] args) {
+
         //instantiates network if the initial config file can be found
         try {
             // replace this string argument with the file path of your choice
             // relative to the NetworkSimulator Directory
-            network = new Network("../InitialConfig.txt");
+            network = new Network("InitialConfig.txt");
         } catch (Exception e){
             System.out.println(e);
         }
@@ -58,13 +59,16 @@ public class NetworkSimulatorApplication {
         } catch (Exception e) {
             return e.getMessage();
         }
+        network.routeAll();
         return "Success";
     }
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/deleteDevice")
-    public void deleteRouter(@RequestParam(name = "deviceName") String routerName) {
+    public String deleteRouter(@RequestParam(name = "deviceName") String routerName) {
         network.deleteRouter(routerName);
+        network.routeAll();
+        return "Success";
     }
 
     @CrossOrigin(origins = "http://localhost:8080")
@@ -73,6 +77,7 @@ public class NetworkSimulatorApplication {
                              @RequestParam(name = "dest") String device2,
                              @RequestParam(name = "cost") String cost) {
         network.connectRouters(device1, device2, Integer.parseInt(cost));
+        network.routeAll();
         return "Success";
     }
 
@@ -81,6 +86,7 @@ public class NetworkSimulatorApplication {
     public String deleteEdge(@RequestParam(name = "r1") String device1,
                              @RequestParam(name = "r2") String device2) {
         network.disconnectRouters(device1, device2);
+        network.routeAll();
         return "Success";
     }
 

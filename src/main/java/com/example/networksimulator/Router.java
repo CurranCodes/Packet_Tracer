@@ -33,66 +33,6 @@ public class Router {
     //encapsulated your work within the route method as was expected
     //also you do not populate the routing table anywhere in your work
    public void route(Router[] routers){
-       //commented your current implementation out so we can iterate upon it
-//       class Edge {
-//           double cost;
-//           int from, to;
-//           public Edge(int from, int to, double cost) {
-//               this.from = from;
-//               this.to = to;
-//               this.cost = cost;
-//           }
-//       }
-//       class Node {
-//           int id;
-//           double value;
-//
-//           public Node(int id, double value) {
-//               this.id = id;
-//               this.value = value;
-//           }
-//
-//           public Node(String deviceName, String router) {
-//           }
-//       }
-//
-//       int n;
-//       double[] dist;
-//       Integer[] prev;
-//       List<List<Edge>> graph;
-//
-//       Comparator<Node> comparator = new Comparator<Node>() {
-//           @Override
-//           public int compare(Node R1, Node R2) {
-//               return 0;
-//           }
-//
-//           //Seems to be static, needs to be updated
-//           //    -Curran
-//           public int compare(Node nodeR1, Node nodeR2, Node nodeR3, Node nodeR4, Node nodeR5) {
-//               if (Math.abs(nodeR1.value - nodeR2.value - nodeR3.value - nodeR4.value - nodeR5.value) < EPS) return 0;
-//               return (nodeR1.value - nodeR2.value - nodeR3.value - nodeR4.value - nodeR5.value) > 0 ? +1 : -1;
-//           }
-//       };
-
-       //Keeps track of the current minimum distance between our node and another
-//       int[][] distanceMatrix = new int[routers.length][2];
-//       int index = 0;
-//
-//       for (int[] distanceEntry : distanceMatrix){
-//           distanceEntry[0] = routers[index].getDeviceName();
-//           if(routers[index] != this) {
-//               distanceEntry[2] = Integer.toString(Integer.MAX_VALUE);//"infinity"
-//           } else{
-//               distanceEntry[2] = "0";
-//           }
-//       }
-//
-//
-//       for (Router dest : routers){
-//           if
-//       }
-
        //first entry is routerName second entry is it's corresponding shortestPath
        //Keeps track of the finalPaths of a certain Node
        String[][] finalPaths = new String[routers.length][2];
@@ -229,7 +169,7 @@ public class Router {
             }
         }
 
-        if (toRemove == null) {
+        if (toRemove != null) {
             //removes connection
             neighbors.removeIf(n -> (Objects.equals(n.getDeviceName(), deviceName)));
 
