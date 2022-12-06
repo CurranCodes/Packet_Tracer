@@ -29,13 +29,12 @@ public class Router {
         this.costList = new ArrayList<String[]>();
     }
 
-    /** This method is for you to implement Maysam! **/
-    //encapsulated your work within the route method as was expected
-    //also you do not populate the routing table anywhere in your work
    public void route(Router[] routers){
-       //first entry is routerName second entry is it's corresponding shortestPath
+       //first entry is routerName second entry is its corresponding shortestPath
        //Keeps track of the finalPaths of a certain Node
-       String[][] finalPaths = new String[routers.length][2];
+
+       /**Updated finalPaths to be able to store TOTAL COST of path as a string**/
+       String[][] finalPaths = new String[routers.length][3];
 
        //priority queue that will give us the router with the least distance first
        ArrayList<RouterDistance> notFinalized = new ArrayList<>();
@@ -79,15 +78,19 @@ public class Router {
                        //update distance entry
                        rdArr[i].setDistance((currRouter.getCost(neighbor) + currDistance));
 
-                       String[] pathToAdd = new String[2];
-                       String[] pathToUpdate = new String[2];
+                       String[] pathToAdd = new String[3];
+                       String[] pathToUpdate = new String[3];
                        int numFound = 0;
                        for (String[] currPath : finalPaths){
                            if (currPath[0].equals(neighbor.getDeviceName())){
+                               currPath[2] = Integer.toString(rdArr[i].getDistance());
                                pathToUpdate = currPath;
                                numFound++;
                            }
                            if (currPath[0].equals(currRouter.getDeviceName())){
+                               //We know that when the Router distance is finalized, it will no longer be updated
+                               //therefore we know that we can add that distance to our 2d string array for storage
+                               currPath[2] = Integer.toString(currDistance);
                                pathToAdd = currPath;
                                numFound++;
                            }
@@ -95,6 +98,9 @@ public class Router {
                                break;
                            }
                        }
+                       //We know that when the Router distance is finalized, it will no longer be updated
+                       //therefore we know that we can add that distance to our 2d string array for storage
+
 
                        //updates our path
                        pathToUpdate[1] = pathToAdd[1] + " " + neighbor.getDeviceName();
@@ -116,7 +122,7 @@ public class Router {
                cost = 1000000;
            } else {
                line = path[1].split(" ")[1];
-               cost = getCost(line);
+               cost = Integer.parseInt(path[2]);
            }
 
 
