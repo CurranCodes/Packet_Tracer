@@ -104,6 +104,10 @@ public class Network {
 
         //disconnects all connections of the router to be deleted
         for(Router neighbor : neighbors){
+            //removes the edge entry for a specific entry if it exists
+            String edgeKey = generateEdgeKey(routerName, neighbor.getDeviceName());
+            deleteEdge(edgeKey);
+
             neighbor.removeConnection(routerName);
         }
 
@@ -225,6 +229,17 @@ public class Network {
             }
         }
         return null;
+    }
+
+    private void deleteEdge(String edgeKey){
+        Enumeration e = edgeTable.keys();
+        while(e.hasMoreElements()){
+            String currKey = (String) e.nextElement();
+            if (currKey.equals(edgeKey)){
+                edgeTable.remove(currKey);
+                return;
+            }
+        }
     }
 
     private boolean routersExist(String r1Name, String r2Name){
