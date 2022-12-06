@@ -109,14 +109,43 @@ h2{
     4px 4px 5px 0px rgba(0,0,0,.1);
     outline: none;
 }
-.disabledButton{
-    color: dimgray !important;
-    background: darkgray !important;
+/*Disabled styles*/
+.disabledButton {
+    background-color:#d7d8d9 !important;
+    background:#d7d8d9 !important;
+    color:#adadad !important;
+    box-shadow:none;
 }
 .disabledButton:hover{
-    color: dimgray !important;
-    background: darkgray !important;
+    background-color:#d7d8d9 !important;
+    background:#d7d8d9 !important;
+    color:#adadad !important;
 }
+.disabledButton.btn-3 span:hover{
+    color:#adadad !important;
+}
+.disabledButton.btn-3:hover:before,
+.disabledButton.btn-3:hover:after{
+    background:none !important;
+    transition:none !important;
+}
+.disabledButton.btn-3 span:hover:before,
+.disabledButton.btn-3 span:hover:after{
+    background:none !important;
+    transition:none !important;
+}
+.disabledButton.btn-3:before,
+.disabledButton.btn-3:after{
+    background:none !important;
+    transition:none !important;
+}
+.disabledButton.btn-3 span:before,
+.disabledButton.btn-3 span:after{
+    background:none !important;
+    transition:none !important;
+}
+/*End Disabled styles*/
+
 .btn-3 {
     background: rgb(0,172,238);
     background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
