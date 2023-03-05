@@ -98,8 +98,6 @@ public class Router {
                                break;
                            }
                        }
-                       //We know that when the Router distance is finalized, it will no longer be updated
-                       //therefore we know that we can add that distance to our 2d string array for storage
 
 
                        //updates our path
